@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login</title>
-<link rel="stylesheet" href="../css/login.css">
+<link rel="stylesheet" href="../css/auth/login.css">
 
 </head>
 
@@ -22,7 +22,7 @@
 <div class="login-card">
     <h2>Iniciar Sesión</h2>
 
-    <form action="validar_login.php" method="POST">
+    <form action="login_process.php" method="POST">
         <label>Usuario</label>
         <input type="text" name="usuario" required>
 
@@ -33,11 +33,7 @@
     </form>
 </div>
 
-<script>
-function toggleTheme() {
-    document.body.classList.toggle("dark");
-}
-</script>
+<script src="../js/buttons/toggle_theme.js"></script>
 
 </body>
 </html>

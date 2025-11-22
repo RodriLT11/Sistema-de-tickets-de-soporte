@@ -9,6 +9,11 @@ window.addEventListener('DOMContentLoaded', () => {
             themeSwitch.checked = true;
         }
     }
+    
+    // Agregar event listener al switch
+    if (themeSwitch) {
+        themeSwitch.addEventListener('change', toggleTheme);
+    }
 });
 
 // Función para cambiar el tema

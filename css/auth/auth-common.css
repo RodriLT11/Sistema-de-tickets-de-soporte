@@ -26,10 +26,14 @@ body {
 }
 
 /* ==== ESTILOS DE FORMULARIO ==== */
-h2 {
+h1, h2 {
     color: var(--text);
     text-align: center;
     margin-bottom: 20px;
+}
+
+p {
+    color: var(--text);
 }
 
 label {
@@ -87,6 +91,15 @@ button:hover {
 
 .auth-link a:hover {
     text-decoration: underline;
+}
+
+/* ==== TARJETA GENÉRICA ==== */
+.container {
+    background: var(--card-bg);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    text-align: center;
 }
 
 /* ==== SWITCH DE TEMA 🌙☀️ ==== */

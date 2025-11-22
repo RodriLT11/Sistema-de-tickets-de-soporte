@@ -1,11 +1,6 @@
 <?php
-session_start();
-
-// Si ya está logueado, redirigir al dashboard
-if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
-    header("Location: /index.php");
-    exit;
-}
+// Middleware: no permitir acceso si ya está logueado
+require_once __DIR__ . '/../middleware/guest.php';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -22,7 +17,7 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
 
 <!-- SWITCH CON ICONOS -->
 <div class="switch-container">
-    <input type="checkbox" id="themeSwitch" onchange="toggleTheme()">
+    <input type="checkbox" id="themeSwitch">
     <label for="themeSwitch" class="switch">
         <span>🌙</span>
         <span>☀️</span>

@@ -1,5 +1,6 @@
 <?php
-session_start();
+// Middleware: no permitir acceso si ya está logueado
+require_once __DIR__ . '/../middleware/guest.php';
 
 // Recuperar valores anteriores si existen
 $old_username = $_SESSION['old_username'] ?? '';
@@ -22,7 +23,7 @@ unset($_SESSION['old_username'], $_SESSION['old_email']);
 
 <!-- SWITCH CON ICONOS -->
 <div class="switch-container">
-    <input type="checkbox" id="themeSwitch" onchange="toggleTheme()">
+    <input type="checkbox" id="themeSwitch">
     <label for="themeSwitch" class="switch">
         <span>🌙</span>
         <span>☀️</span>

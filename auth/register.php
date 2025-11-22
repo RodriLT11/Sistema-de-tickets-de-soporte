@@ -1,3 +1,13 @@
+<?php
+session_start();
+
+// Recuperar valores anteriores si existen
+$old_username = $_SESSION['old_username'] ?? '';
+$old_email = $_SESSION['old_email'] ?? '';
+
+// Limpiar después de usarlos
+unset($_SESSION['old_username'], $_SESSION['old_email']);
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -22,12 +32,12 @@
 <div class="register-card">
     <h2>Registrarse</h2>
 
-    <form action="register_handler.php" method="POST">
+    <form action="../handlers/auth/register_handler.php" method="POST">
         <label>Nombre de usuario</label>
-        <input type="text" name="username" required>
+        <input type="text" name="username" value="<?= htmlspecialchars($old_username) ?>" required>
 
         <label>Correo electrónico</label>
-        <input type="email" name="email" required>
+        <input type="email" name="email" value="<?= htmlspecialchars($old_email) ?>" required>
 
         <label>Contraseña</label>
         <input type="password" name="password" required>
@@ -43,7 +53,20 @@
     </p>
 </div>
 
-<script src="../js/buttons/toggle_theme.js"></script>
+<script src="../js/utils/toggle_theme.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="../js/utils/alerts_sweetalert.js"></script>
+
+<?php
+if (isset($_SESSION['success'])) {
+    echo "<script>showSuccess('{$_SESSION['success']}', '/auth/login.php');</script>";
+    unset($_SESSION['success']);
+}
+if (isset($_SESSION['error'])) {
+    echo "<script>showError('{$_SESSION['error']}');</script>";
+    unset($_SESSION['error']);
+}
+?>
 
 </body>
 </html>

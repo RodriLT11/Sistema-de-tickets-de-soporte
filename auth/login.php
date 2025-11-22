@@ -38,7 +38,7 @@
     </p>
 </div>
 
-<script src="../js/buttons/toggle_theme.js"></script>
+<script src="../js/utils/toggle_theme.js"></script>
 
 </body>
 </html>

@@ -1,0 +1,144 @@
+/* ==== VARIABLES DE TEMA ==== */
+:root {
+    --bg: #f2f2f2;
+    --card-bg: #ffffff;
+    --text: #222;
+    --primary: #4a6cf7;
+}
+
+body.dark {
+    --bg: #121212;
+    --card-bg: #1f1f1f;
+    --text: #e6e6e6;
+    --primary: #7b9cff;
+}
+
+/* ==== LAYOUT GENERAL ==== */
+body {
+    background: var(--bg);
+    font-family: Arial, sans-serif;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    transition: 0.3s ease;
+}
+
+/* ==== ESTILOS DE FORMULARIO ==== */
+h2 {
+    color: var(--text);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+label {
+    color: var(--text);
+    font-weight: bold;
+    display: block;
+    margin-top: 15px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background: var(--card-bg);
+    color: var(--text);
+    transition: 0.3s;
+}
+
+input:focus {
+    border-color: var(--primary);
+    outline: none;
+}
+
+button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+/* ==== LINKS DE NAVEGACIÓN ==== */
+.auth-link {
+    text-align: center;
+    margin-top: 15px;
+    color: var(--text);
+}
+
+.auth-link a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.auth-link a:hover {
+    text-decoration: underline;
+}
+
+/* ==== SWITCH DE TEMA 🌙☀️ ==== */
+.switch-container {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.switch-container input {
+    display: none;
+}
+
+.switch {
+    width: 70px;
+    height: 32px;
+    background: #ccc;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 6px;
+    position: relative;
+    cursor: pointer;
+    font-size: 16px;
+    color: white;
+    transition: 0.3s;
+}
+
+/* Círculo deslizante */
+.switch::after {
+    content: "";
+    width: 28px;
+    height: 28px;
+    background: white;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+/* Iconos */
+.switch span {
+    z-index: 2;
+}
+
+/* Activado */
+#themeSwitch:checked + .switch {
+    background: var(--primary);
+}
+
+#themeSwitch:checked + .switch::after {
+    transform: translateX(48px);
+}

@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login</title>
+<link rel="stylesheet" href="../css/auth/auth-common.css">
 <link rel="stylesheet" href="../css/auth/register.css">
 
 </head>
@@ -31,6 +32,10 @@
 
         <button type="submit">Entrar</button>
     </form>
+
+    <p class="auth-link">
+        ¿Ya tienes cuenta? <a href="login.php">Inicia sesión</a>
+    </p>
 </div>
 
 <script src="../js/buttons/toggle_theme.js"></script>

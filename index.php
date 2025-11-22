@@ -1,11 +1,6 @@
 <?php
-session_start();
-
-// Solo redirigir si NO hay sesión
-if (!isset($_SESSION['usuario'])) {
-    header("Location: ../auth/login.php");
-    exit();
-}
+// Proteger la página - requiere autenticación
+require_once __DIR__ . '/middleware/auth.php';
 ?>
 
 <!DOCTYPE html>
@@ -53,9 +48,9 @@ if (!isset($_SESSION['usuario'])) {
 </head>
 <body>
     <div class="container">
-        <h1>Bienvenido, <?php echo htmlspecialchars($_SESSION['usuario']); ?>!</h1>
+        <h1>Bienvenido, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h1>
         <p>Has iniciado sesión correctamente.</p>
-        <a href="logout.php" class="logout-btn">Cerrar Sesión</a>
+        <a href="/handlers/auth/logout_handler.php" class="logout-btn">Cerrar Sesión</a>
     </div>
 </body>
 </html>

@@ -1,3 +1,7 @@
+# Variables de entorno
+.env
+
+# Configuración sensible
 /config/db.php
-suport_system.sql
+support_system.sql
 

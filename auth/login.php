@@ -1,3 +1,12 @@
+<?php
+session_start();
+
+// Si ya está logueado, redirigir al dashboard
+if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
+    header("Location: /index.php");
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -23,12 +32,25 @@
 <div class="login-card">
     <h2>Iniciar Sesión</h2>
 
-    <form action="login_process.php" method="POST">
-        <label>Usuario</label>
-        <input type="text" name="usuario" required>
+    <?php if (isset($_SESSION['error'])): ?>
+        <div class="message error"><?= htmlspecialchars($_SESSION['error']); unset($_SESSION['error']); ?></div>
+    <?php endif; ?>
+
+    <?php if (isset($_SESSION['success'])): ?>
+        <div class="message success"><?= htmlspecialchars($_SESSION['success']); unset($_SESSION['success']); ?></div>
+    <?php endif; ?>
+
+    <form action="/handlers/auth/login_handler.php" method="POST">
+        <label>Usuario o Email</label>
+        <input type="text" name="usuario" value="<?= htmlspecialchars($_SESSION['old_usuario'] ?? '') ?>" required>
 
         <label>Contraseña</label>
         <input type="password" name="password" required>
+
+        <div style="display: flex; align-items: center; margin-top: 10px;">
+            <input type="checkbox" name="remember" id="remember" style="width: auto; margin-right: 8px;">
+            <label for="remember" style="margin: 0; font-weight: normal; color: var(--text);">Recordarme</label>
+        </div>
 
         <button type="submit">Entrar</button>
     </form>

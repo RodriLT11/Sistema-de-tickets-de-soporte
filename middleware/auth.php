@@ -1,7 +1,6 @@
 <?php
 /**
  * Middleware para proteger páginas que requieren autenticación
- * Incluir este archivo al inicio de las páginas protegidas
  */
 
 session_start();

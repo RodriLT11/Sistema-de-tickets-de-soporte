@@ -1,6 +1,7 @@
 <?php
 // Middleware: no permitir acceso si ya está logueado
 require_once __DIR__ . '/../middleware/guest.php';
+require_once __DIR__ . '/../helpers/csrf.php';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -36,6 +37,7 @@ require_once __DIR__ . '/../middleware/guest.php';
     <?php endif; ?>
 
     <form action="/handlers/auth/login_handler.php" method="POST">
+        <?= csrfField() ?>
         <label>Usuario o Email</label>
         <input type="text" name="usuario" value="<?= htmlspecialchars($_SESSION['old_usuario'] ?? '') ?>" required>
 

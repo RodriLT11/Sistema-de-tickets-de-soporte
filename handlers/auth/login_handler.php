@@ -1,8 +1,16 @@
 <?php
 session_start();
 require_once '../../config/db.php';
+require_once '../../helpers/csrf.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    
+    // Verificar token CSRF
+    if (!isset($_POST['csrf_token']) || !verifyCsrfToken($_POST['csrf_token'])) {
+        $_SESSION['error'] = "Token de seguridad inválido. Intenta nuevamente.";
+        header("Location: /auth/login.php");
+        exit;
+    }
     
     $usuario = trim($_POST['usuario']);
     $password = $_POST['password'];

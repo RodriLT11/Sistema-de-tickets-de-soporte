@@ -1,6 +1,7 @@
 <?php
 // Middleware: no permitir acceso si ya está logueado
 require_once __DIR__ . '/../middleware/guest.php';
+require_once __DIR__ . '/../helpers/csrf.php';
 
 // Recuperar valores anteriores si existen
 $old_username = $_SESSION['old_username'] ?? '';
@@ -34,6 +35,7 @@ unset($_SESSION['old_username'], $_SESSION['old_email']);
     <h2>Registrarse</h2>
 
     <form action="../handlers/auth/register_handler.php" method="POST">
+        <?= csrfField() ?>
         <label>Nombre de usuario</label>
         <input type="text" name="username" value="<?= htmlspecialchars($old_username) ?>" required>
 

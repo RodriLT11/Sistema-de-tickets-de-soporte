@@ -3,10 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login</title>
+<title>Register</title>
 <link rel="stylesheet" href="../css/auth/auth-common.css">
 <link rel="stylesheet" href="../css/auth/register.css">
-
 </head>
 
 <body>
@@ -23,14 +22,20 @@
 <div class="register-card">
     <h2>Registrarse</h2>
 
-    <form action="register_process.php" method="POST">
-        <label>Usuario</label>
-        <input type="text" name="usuario" required>
+    <form action="register_handler.php" method="POST">
+        <label>Nombre de usuario</label>
+        <input type="text" name="username" required>
+
+        <label>Correo electrónico</label>
+        <input type="email" name="email" required>
 
         <label>Contraseña</label>
         <input type="password" name="password" required>
 
-        <button type="submit">Entrar</button>
+        <label>Confirmar contraseña</label>
+        <input type="password" name="password_confirm" required>
+
+        <button type="submit">Registrarse</button>
     </form>
 
     <p class="auth-link">

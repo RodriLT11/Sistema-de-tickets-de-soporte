@@ -66,7 +66,6 @@ function renderProjects() {
             <div class="empty-state" style="grid-column: 1 / -1;">
                 <h2>No hay proyectos</h2>
                 <p>Crea tu primer proyecto para comenzar</p>
-                ${IS_ADMIN ? '<button class="btn-manage-projects" onclick="document.getElementById(\'btnNewProject\').click()">Nuevo Proyecto</button>' : ''}
             </div>
         `;
         return;
@@ -76,6 +75,8 @@ function renderProjects() {
         const projectCard = document.createElement('div');
         projectCard.className = 'project-item';
         const createdDate = new Date(project.created_at).toLocaleDateString('es-ES');
+        const isAdmin = project.role_id == 3; // Administrador del proyecto
+        
         projectCard.innerHTML = `
             <h3>${escapeHtml(project.name)}</h3>
             <p class="project-description">${escapeHtml(project.description) || 'Sin descripción'}</p>
@@ -83,9 +84,9 @@ function renderProjects() {
                 <span class="project-count">Creado: ${createdDate}</span>
             </div>
             <div class="project-actions">
-                ${IS_ADMIN ? `<button class="btn-edit" onclick="openEditModal(${project.id})">Editar</button>` : ''}
-                ${IS_ADMIN ? `<button class="btn-add-user" onclick="openAddUserModal(${project.id})">+ Usuario</button>` : ''}
-                ${IS_ADMIN ? `<button class="btn-delete" onclick="openDeleteModal(${project.id})">Eliminar</button>` : ''}
+                ${isAdmin ? `<button class="btn-edit" onclick="openEditModal(${project.id})">Editar</button>` : ''}
+                ${isAdmin ? `<button class="btn-add-user" onclick="openAddUserModal(${project.id})">+ Usuario</button>` : ''}
+                ${isAdmin ? `<button class="btn-delete" onclick="openDeleteModal(${project.id})">Eliminar</button>` : ''}
             </div>
         `;
         projectsGrid.appendChild(projectCard);

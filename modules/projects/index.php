@@ -78,8 +78,6 @@ include __DIR__ . '/../../includes/themeSwitch.php';
 </div>
 
 
-<?php if (isset($_SESSION['role_id']) && $_SESSION['role_id'] == 3): ?>
-
 <!-- MODAL AGREGAR USUARIO -->
 <div class="modal" id="addUserModal">
     <div class="modal-content">
@@ -111,10 +109,10 @@ include __DIR__ . '/../../includes/themeSwitch.php';
         </form>
     </div>
 </div>
-<?php endif; ?>
 
 <script>
-    const IS_ADMIN = <?php echo (isset($_SESSION['role_id']) && $_SESSION['role_id'] == 3) ? 'true' : 'false'; ?>;
+    // Variable global que se actualizará dinámicamente por proyecto
+    let IS_ADMIN = false;
 </script>
 
 <script src="/js/utils/toggle_theme.js"></script>

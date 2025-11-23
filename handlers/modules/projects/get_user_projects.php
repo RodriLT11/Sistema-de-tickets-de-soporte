@@ -9,8 +9,9 @@ try {
     $userId = intval($_SESSION['user_id']);
     
     // Obtener proyectos donde el usuario está asignado y no están eliminados
+    // Incluir el role_id del usuario en cada proyecto
     $stmt = $conn->prepare("
-        SELECT p.id, p.name, p.description, p.created_at 
+        SELECT p.id, p.name, p.description, p.created_at, pu.role_id
         FROM projects p
         INNER JOIN project_users pu ON p.id = pu.project_id
         WHERE pu.user_id = ? AND p.`deleted` = 0

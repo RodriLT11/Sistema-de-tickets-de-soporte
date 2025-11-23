@@ -2,7 +2,7 @@
 // Middleware: no permitir acceso si ya está logueado
 require_once __DIR__ . '/../middleware/guest.php';
 require_once __DIR__ . '/../helpers/csrf.php';
-
+include __DIR__ . '/../includes/themeSwitch.php';
 // Recuperar valores anteriores si existen
 $old_username = $_SESSION['old_username'] ?? '';
 $old_email = $_SESSION['old_email'] ?? '';
@@ -22,14 +22,7 @@ unset($_SESSION['old_username'], $_SESSION['old_email']);
 
 <body>
 
-<!-- SWITCH CON ICONOS -->
-<div class="switch-container">
-    <input type="checkbox" id="themeSwitch">
-    <label for="themeSwitch" class="switch">
-        <span>🌙</span>
-        <span>☀️</span>
-    </label>
-</div>
+
 
 <div class="register-card">
     <h2>Registrarse</h2>

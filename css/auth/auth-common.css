@@ -106,7 +106,8 @@ button:hover {
 .switch-container {
     position: absolute;
     top: 20px;
-    left: 20px;
+    right: 20px;
+    left: auto;
 }
 
 .switch-container input {

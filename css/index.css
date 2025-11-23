@@ -56,6 +56,10 @@ html, body {
     margin-left: 280px;
 }
 
+.avatar-link {
+    margin-right: 5rem;
+}
+
 .header-right {
     display: flex;
     align-items: center;

@@ -111,8 +111,8 @@ body > .switch-container {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 40px;
-    margin-top: -10px;
-    padding-top: 90px;
+    margin-top: 20px;
+    padding-top: 30px;
     padding-bottom: 0;
 }
 
@@ -121,21 +121,23 @@ body > .switch-container {
     font-size: 2.2em;
     color: var(--text);
     font-weight: bold;
+    margin-right: auto;
 }
 
+/* boton para agregar proyecto nuevo */
 .btn-manage-projects {
-    padding: 12px 24px;
+    padding: 8px 16px;
+    width: auto;
     background: var(--primary);
     color: white;
     border: none;
     border-radius: 6px;
-    text-decoration: none;
     cursor: pointer;
+    font-size: 12px;
     font-weight: bold;
-    transition: all 0.2s ease;
-    font-size: 14px;
-    display: inline-block;
+    margin-left: auto;
 }
+
 
 .btn-manage-projects:hover {
     opacity: 0.9;
@@ -144,13 +146,25 @@ body > .switch-container {
 
 /* ===== GRID DE PROYECTOS ===== */
 .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    display: flex;
+    flex-direction: row;
     gap: 25px;
+    overflow-x: auto;
+    padding-bottom: 20px;
     margin-top: 30px;
+    scroll-behavior: smooth;
+
+    /* opcional: ocultar scrollbar */
+    scrollbar-width: none;
+}
+.projects-grid::-webkit-scrollbar {
+    display: none;
 }
 
+/* Cada tarjeta mantiene su tamaño fijo */
 .project-item {
+    min-width: 280px;
+    max-width: 280px;
     background: var(--card-bg);
     padding: 25px;
     border-radius: 10px;

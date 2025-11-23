@@ -81,6 +81,9 @@ function renderProjects() {
             <h3>${escapeHtml(project.name)}</h3>
             <p class="project-description">${escapeHtml(project.description) || 'Sin descripción'}</p>
             <div class="project-meta">
+                <span class="project-count">Rol: ${project.role_name}</span>
+            </div>
+            <div class="project-meta">
                 <span class="project-count">Creado: ${createdDate}</span>
             </div>
             <div class="project-actions">

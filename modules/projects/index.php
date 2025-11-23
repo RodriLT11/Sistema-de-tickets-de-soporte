@@ -6,12 +6,12 @@ include __DIR__ . '/../../includes/themeSwitch.php';
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proyectos</title>
-    <link rel="stylesheet" href="/css/auth/auth-common.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proyectos</title>
     <link rel="stylesheet" href="/css/includes/modules.css">
     <link rel="stylesheet" href="/css/projects/index.css">
+    <link rel="stylesheet" href="/css/auth/auth-common.css">
 </head>
 <body>
 
@@ -22,7 +22,7 @@ include __DIR__ . '/../../includes/themeSwitch.php';
 <!-- HEADER SUPERIOR -->
  <?php include __DIR__ . '/../../includes/header.php'; ?>
 
-<!-- CONTENIDO PRINCIPAL -->
+ <!-- CONTENIDO PRINCIPAL -->
 <main class="main-content">
     <div class="projects-header">
         <h1>Proyectos</h1>

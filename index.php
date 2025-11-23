@@ -22,7 +22,7 @@ include __DIR__ . '/includes/themeSwitch.php';
 </aside>
 
 <!-- HEADER SUPERIOR -->
- <?php include __DIR__ . '/../../includes/header.php'; ?>
+ <?php include __DIR__ . '/includes/header.php'; ?>
 
 <!-- CONTENIDO PRINCIPAL -->
 <main class="main-content">

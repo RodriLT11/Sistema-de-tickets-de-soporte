@@ -11,7 +11,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Location: /auth/login.php");
         exit;
     }
-    
+    $_SESSION['user_id'] = $user['id'];
+    $_SESSION['username'] = $user['username']; // 👈 Asegurar que guardas username
+
     $usuario = trim($_POST['usuario']);
     $password = $_POST['password'];
     $remember = isset($_POST['remember']) ? true : false;

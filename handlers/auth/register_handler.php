@@ -2,6 +2,7 @@
 session_start();
 require_once '../../config/db.php';
 require_once '../../helpers/csrf.php';
+require_once '../../helpers/Avatar.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -47,6 +48,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bind_param("sss", $username, $email, $password_hashed);
 
     if ($stmt->execute()) {
+        $user_id = $conn->insert_id; // Obtener el ID del usuario recién creado
+        
+        // Generar y guardar el avatar
+        try {
+            $avatar = new Avatar();
+            $avatar->assign_avatar_to_user($user_id, $username, $conn);
+        } catch (Exception $e) {
+            // Si falla el avatar, no afecta el registro
+            error_log("Error al generar avatar: " . $e->getMessage());
+        }
+        
         unset($_SESSION['old_username'], $_SESSION['old_email']); // limpiar valores antiguos
         $_SESSION['success'] = "Registro completado con éxito.";
         header("Location: /auth/register.php");

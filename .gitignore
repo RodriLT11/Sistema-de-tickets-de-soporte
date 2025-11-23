@@ -5,3 +5,4 @@
 /config/db.php
 support_system.sql
 
+public/assets/avatar/*

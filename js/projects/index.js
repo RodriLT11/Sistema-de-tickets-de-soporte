@@ -6,9 +6,13 @@ let editingId = null;
 const btnNewProject = document.getElementById('btnNewProject');
 const projectModal = document.getElementById('projectModal');
 const deleteModal = document.getElementById('deleteModal');
+const addUserModal = document.getElementById('addUserModal');
 const closeModal = document.getElementById('closeModal');
+const closeAddUserModal = document.getElementById('closeAddUserModal');
 const btnCancel = document.getElementById('btnCancel');
+const btnCancelAddUser = document.getElementById('btnCancelAddUser');
 const projectForm = document.getElementById('projectForm');
+const addUserForm = document.getElementById('addUserForm');
 const projectsGrid = document.getElementById('projectsGrid');
 const modalTitle = document.getElementById('modalTitle');
 const btnCancelDelete = document.getElementById('btnCancelDelete');
@@ -22,9 +26,12 @@ document.addEventListener('DOMContentLoaded', () => {
 // Event Listeners
 btnNewProject.addEventListener('click', openAddModal);
 closeModal.addEventListener('click', closeProjectModal);
+closeAddUserModal.addEventListener('click', closeAddUserModalFunc);
 btnCancel.addEventListener('click', closeProjectModal);
+btnCancelAddUser.addEventListener('click', closeAddUserModalFunc);
 btnCancelDelete.addEventListener('click', closeDeleteModal);
 projectForm.addEventListener('submit', handleSubmit);
+addUserForm.addEventListener('submit', handleAddUserSubmit);
 
 // Cerrar modal al hacer click fuera
 window.addEventListener('click', (e) => {
@@ -35,28 +42,22 @@ window.addEventListener('click', (e) => {
 // ===== FUNCIONES =====
 
 function loadProjects() {
-    // Aquí iría la llamada al servidor para obtener proyectos
-    // Por ahora usamos datos de ejemplo desde localStorage
-    projects = JSON.parse(localStorage.getItem('projects')) || [
-        {
-            id: 1,
-            name: 'Proyecto Demo',
-            description: 'Este es un proyecto de demostración para el sistema',
-            status: 'activo',
-            ticketsCount: 5
-        },
-        {
-            id: 2,
-            name: 'Sistema de Tickets',
-            description: 'Plataforma de gestión de tickets y proyectos',
-            status: 'activo',
-            ticketsCount: 12
-        }
-    ];
-    
-    renderProjects();
+    // Llamada al servidor para obtener proyectos del usuario autenticado
+    fetch('/handlers/modules/projects/get_user_projects.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                projects = data.projects;
+                renderProjects();
+            } else {
+                showError('Error al cargar proyectos');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showError('Error de conexión');
+        });
 }
-
 function renderProjects() {
     projectsGrid.innerHTML = '';
     
@@ -65,7 +66,7 @@ function renderProjects() {
             <div class="empty-state" style="grid-column: 1 / -1;">
                 <h2>No hay proyectos</h2>
                 <p>Crea tu primer proyecto para comenzar</p>
-                <button class="btn-manage-projects" onclick="document.getElementById('btnNewProject').click()">Nuevo Proyecto</button>
+                ${IS_ADMIN ? '<button class="btn-manage-projects" onclick="document.getElementById(\'btnNewProject\').click()">Nuevo Proyecto</button>' : ''}
             </div>
         `;
         return;
@@ -74,21 +75,23 @@ function renderProjects() {
     projects.forEach(project => {
         const projectCard = document.createElement('div');
         projectCard.className = 'project-item';
+        const createdDate = new Date(project.created_at).toLocaleDateString('es-ES');
         projectCard.innerHTML = `
             <h3>${escapeHtml(project.name)}</h3>
             <p class="project-description">${escapeHtml(project.description) || 'Sin descripción'}</p>
             <div class="project-meta">
-                <span class="project-status status-${project.status}">${capitalize(project.status)}</span>
-                <span class="project-count">${project.ticketsCount || 0} tickets</span>
+                <span class="project-count">Creado: ${createdDate}</span>
             </div>
             <div class="project-actions">
-                <button class="btn-edit" onclick="openEditModal(${project.id})">Editar</button>
-                <button class="btn-delete" onclick="openDeleteModal(${project.id})">Eliminar</button>
+                ${IS_ADMIN ? `<button class="btn-edit" onclick="openEditModal(${project.id})">Editar</button>` : ''}
+                ${IS_ADMIN ? `<button class="btn-add-user" onclick="openAddUserModal(${project.id})">+ Usuario</button>` : ''}
+                ${IS_ADMIN ? `<button class="btn-delete" onclick="openDeleteModal(${project.id})">Eliminar</button>` : ''}
             </div>
         `;
         projectsGrid.appendChild(projectCard);
     });
 }
+
 
 function openAddModal() {
     editingId = null;
@@ -106,7 +109,6 @@ function openEditModal(id) {
     modalTitle.textContent = 'Editar Proyecto';
     document.getElementById('projectName').value = project.name;
     document.getElementById('projectDescription').value = project.description;
-    document.getElementById('projectStatus').value = project.status;
     projectForm.querySelector('button[type="submit"]').textContent = 'Guardar Cambios';
     projectModal.classList.add('show');
 }
@@ -127,12 +129,86 @@ function closeDeleteModal() {
     editingId = null;
 }
 
+function openAddUserModal(projectId) {
+    editingId = projectId;
+    addUserModal.classList.add('show');
+    loadAvailableUsers(projectId);
+}
+
+function closeAddUserModalFunc() {
+    addUserModal.classList.remove('show');
+    addUserForm.reset();
+    editingId = null;
+}
+
+function loadAvailableUsers(projectId) {
+    fetch('/handlers/modules/projects/get_available_users.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ project_id: projectId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        const userSelect = document.getElementById('userSelect');
+        userSelect.innerHTML = '<option value="">-- Selecciona un usuario --</option>';
+        
+        if (data.success && data.users.length > 0) {
+            data.users.forEach(user => {
+                const option = document.createElement('option');
+                option.value = user.id;
+                option.textContent = `${user.username} (${user.email})`;
+                userSelect.appendChild(option);
+            });
+        } else {
+            userSelect.innerHTML = '<option value="">No hay usuarios disponibles</option>';
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showError('Error al cargar usuarios');
+    });
+}
+
+function handleAddUserSubmit(e) {
+    e.preventDefault();
+
+    const userId = document.getElementById('userSelect').value;
+    const roleId = document.getElementById('roleSelect').value;
+
+    if (!userId || !roleId) {
+        showError('Debes seleccionar un usuario y un rol');
+        return;
+    }
+
+    fetch('/handlers/modules/projects/add_user_to_project.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ project_id: editingId, user_id: userId, role_id: roleId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showSuccess('Usuario agregado al proyecto');
+            closeAddUserModalFunc();
+        } else {
+            showError(data.message || 'Error al agregar usuario');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showError('Error de conexión');
+    });
+}
+
 function handleSubmit(e) {
     e.preventDefault();
 
     const name = document.getElementById('projectName').value.trim();
     const description = document.getElementById('projectDescription').value.trim();
-    const status = document.getElementById('projectStatus').value;
 
     if (!name) {
         showError('El nombre del proyecto es requerido');
@@ -141,44 +217,78 @@ function handleSubmit(e) {
 
     if (editingId === null) {
         // Crear nuevo proyecto
-        const newProject = {
-            id: Date.now(),
-            name,
-            description,
-            status,
-            ticketsCount: 0
-        };
-        projects.push(newProject);
-        showSuccess('Proyecto creado correctamente');
+        fetch('/handlers/modules/projects/create_project.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name, description })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showSuccess('Proyecto creado correctamente');
+                loadProjects();
+                closeProjectModal();
+            } else {
+                showError(data.message || 'Error al crear proyecto');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showError('Error de conexión');
+        });
     } else {
         // Editar proyecto
-        const project = projects.find(p => p.id === editingId);
-        if (project) {
-            project.name = name;
-            project.description = description;
-            project.status = status;
-            showSuccess('Proyecto actualizado correctamente');
-        }
+        fetch('/handlers/modules/projects/update_project.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ id: editingId, name, description })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showSuccess('Proyecto actualizado correctamente');
+                loadProjects();
+                closeProjectModal();
+            } else {
+                showError(data.message || 'Error al actualizar proyecto');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showError('Error de conexión');
+        });
     }
-
-    saveProjects();
-    renderProjects();
-    closeProjectModal();
 }
 
 function deleteProject() {
-    projects = projects.filter(p => p.id !== editingId);
-    saveProjects();
-    renderProjects();
-    closeDeleteModal();
-    showSuccess('Proyecto eliminado correctamente');
+    fetch('/handlers/modules/projects/delete_project.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: editingId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showSuccess('Proyecto eliminado correctamente');
+            loadProjects();
+            closeDeleteModal();
+        } else {
+            showError(data.message || 'Error al eliminar proyecto');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showError('Error de conexión');
+    });
 }
 
 btnConfirmDelete.addEventListener('click', deleteProject);
-
-function saveProjects() {
-    localStorage.setItem('projects', JSON.stringify(projects));
-}
 
 // ===== UTILIDADES =====
 
@@ -199,11 +309,21 @@ function capitalize(str) {
 }
 
 function showSuccess(message) {
-    console.log('✓', message);
-    // Puedes usar SweetAlert2 aquí si lo tienes disponible
+    Swal.fire({
+        icon: 'success',
+        title: '¡Éxito!',
+        text: message,
+        confirmButtonText: 'Aceptar',
+        timer: 3000,
+        timerProgressBar: true
+    });
 }
 
 function showError(message) {
-    console.error('✗', message);
-    // Puedes usar SweetAlert2 aquí si lo tienes disponible
+    Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: message,
+        confirmButtonText: 'Aceptar'
+    });
 }

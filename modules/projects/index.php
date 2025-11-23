@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/../middleware/auth.php';
-include __DIR__ . '/../includes/themeSwitch.php';
+require_once __DIR__ . '/../../middleware/auth.php';
+include __DIR__ . '/../../includes/themeSwitch.php';
 ?>
 
 <!DOCTYPE html>
@@ -17,7 +17,7 @@ include __DIR__ . '/../includes/themeSwitch.php';
 
 <!-- SIDEBAR / Módulos -->
 <aside class="modules-sidebar" id="modulesSidebar">
-    <?php include __DIR__ . '/../includes/modules.php'; ?>
+    <?php include __DIR__ . '/../../includes/modules.php'; ?>
 </aside>
 
 <!-- HEADER SUPERIOR -->
@@ -57,15 +57,6 @@ include __DIR__ . '/../includes/themeSwitch.php';
                 <textarea id="projectDescription" name="description" rows="4"></textarea>
             </div>
 
-            <div class="form-group">
-                <label for="projectStatus">Estado</label>
-                <select id="projectStatus" name="status">
-                    <option value="activo">Activo</option>
-                    <option value="pausado">Pausado</option>
-                    <option value="completado">Completado</option>
-                </select>
-            </div>
-
             <div class="form-actions">
                 <button type="submit" class="btn-submit">Guardar Proyecto</button>
                 <button type="button" class="btn-cancel" id="btnCancel">Cancelar</button>
@@ -85,6 +76,46 @@ include __DIR__ . '/../includes/themeSwitch.php';
         </div>
     </div>
 </div>
+
+
+<?php if (isset($_SESSION['role_id']) && $_SESSION['role_id'] == 3): ?>
+
+<!-- MODAL AGREGAR USUARIO -->
+<div class="modal" id="addUserModal">
+    <div class="modal-content">
+        <span class="close" id="closeAddUserModal">&times;</span>
+        <h2>Agregar Usuario al Proyecto</h2>
+        
+        <form id="addUserForm">
+            <div class="form-group">
+                <label for="userSelect">Seleccionar Usuario</label>
+                <select id="userSelect" name="user_id" required>
+                    <option value="">-- Selecciona un usuario --</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="roleSelect">Rol</label>
+                <select id="roleSelect" name="role_id" required>
+                    <option value="">-- Selecciona un rol --</option>
+                    <option value="3">Administrador</option>
+                    <option value="2">Agente</option>
+                    <option value="1">Cliente</option>
+                </select>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-submit">Agregar Usuario</button>
+                <button type="button" class="btn-cancel" id="btnCancelAddUser">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
+<?php endif; ?>
+
+<script>
+    const IS_ADMIN = <?php echo (isset($_SESSION['role_id']) && $_SESSION['role_id'] == 3) ? 'true' : 'false'; ?>;
+</script>
 
 <script src="/js/utils/toggle_theme.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

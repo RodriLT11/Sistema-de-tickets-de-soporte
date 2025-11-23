@@ -12,7 +12,7 @@
         </a>
     </div>
     <div class="module-card">
-        <a href="/projects/index.php">
+        <a href="/modules/projects/index.php">
             <h3>Proyectos</h3>
             <p>Administrar proyectos y miembros</p>
         </a>

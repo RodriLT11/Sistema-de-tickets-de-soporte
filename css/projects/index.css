@@ -218,7 +218,7 @@ html, body {
     gap: 10px;
 }
 
-.btn-edit, .btn-delete {
+.btn-edit, .btn-add-user, .btn-delete {
     flex: 1;
     padding: 8px;
     border: none;
@@ -236,6 +236,16 @@ html, body {
 
 .btn-edit:hover {
     opacity: 0.85;
+}
+
+.btn-add-user {
+    background: #4caf5034;
+    color: #2e7d32;
+}
+
+.btn-add-user:hover {
+    background: #4caf50;
+    color: white;
 }
 
 .btn-delete {

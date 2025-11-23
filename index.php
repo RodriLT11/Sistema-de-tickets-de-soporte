@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/middleware/auth.php';
-require_once __DIR__ . '/helpers/Avatar.php';
+require_once __DIR__ . '/helpers/avatar.php';
 include __DIR__ . '/includes/themeSwitch.php';
 ?>
 
@@ -22,7 +22,16 @@ include __DIR__ . '/includes/themeSwitch.php';
 </aside>
 
 <!-- HEADER SUPERIOR -->
- <?php include __DIR__ . '/includes/header.php'; ?>
+<?php include __DIR__ . '/includes/header.php'; ?>
+<header class="dashboard-header">
+    <button class="menu-btn" id="menuBtn">&#9776;</button>
+    <div class="header-right">
+        <a href="" class="avatar-link">
+            <img src="<?php echo htmlspecialchars(get_avatar_url()); ?>" alt="Avatar de <?php echo htmlspecialchars($_SESSION['username']); ?>" style="width: 40px; height: 40px; border-radius: 50%;">
+        </a>
+        <a href="/handlers/auth/logout_handler.php" class="logout-btn">Cerrar Sesión</a>
+    </div>
+</header>
 
 <!-- CONTENIDO PRINCIPAL -->
 <main class="main-content">

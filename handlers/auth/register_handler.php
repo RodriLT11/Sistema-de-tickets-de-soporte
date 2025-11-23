@@ -2,7 +2,7 @@
 session_start();
 require_once '../../config/db.php';
 require_once '../../helpers/csrf.php';
-require_once '../../helpers/Avatar.php';
+require_once '../../helpers/avatar.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -52,8 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         // Generar y guardar el avatar
         try {
-            $avatar = new Avatar();
-            $avatar->assign_avatar_to_user($user_id, $username, $conn);
+            assign_avatar_to_user($user_id, $username, $conn);
         } catch (Exception $e) {
             // Si falla el avatar, no afecta el registro
             error_log("Error al generar avatar: " . $e->getMessage());

@@ -19,14 +19,8 @@ include __DIR__ . '/../../includes/themeSwitch.php';
 <aside class="modules-sidebar" id="modulesSidebar">
     <?php include __DIR__ . '/../../includes/modules.php'; ?>
 </aside>
-
 <!-- HEADER SUPERIOR -->
-<header class="dashboard-header">
-    <button class="menu-btn" id="menuBtn">&#9776;</button>
-    <div class="header-right">
-        <a href="/handlers/auth/logout_handler.php" class="logout-btn">Cerrar Sesión</a>
-    </div>
-</header>
+ <?php include __DIR__ . '/../../includes/header.php'; ?>
 
 <!-- CONTENIDO PRINCIPAL -->
 <main class="main-content">
